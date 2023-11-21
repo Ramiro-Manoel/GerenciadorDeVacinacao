@@ -40,8 +40,8 @@ public class Pessoa implements Serializable{
 		this.idade = idade;
 	}
 
-	public void exibePessoa() {
-		System.out.println(nome + ", " + cpf + ", " + idade);
+	public String exibePessoa() {
+		return  nome + ", " + cpf + ", " + idade;
 	}
 
 	@Override

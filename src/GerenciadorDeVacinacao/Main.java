@@ -31,11 +31,20 @@ public class Main {
 
 		return retorno;
 	}
-
+	
+	public static void removeDaFila(ArrayList<Pessoa> lista, Queue<Pessoa> fila) {
+		if(fila.isEmpty() == false) {
+			System.out.println("O paciente removido foi o:\n" + fila.peek().exibePessoa());
+			lista.add(fila.poll());
+			} else {
+				System.out.println("A fila está vazia!");
+			}
+	}
+	
 	public static void main(String[] args) {
 
 		Scanner sc = new Scanner(System.in);
-		Queue<Pessoa> fila = new PriorityQueue<>();
+		Queue<Pessoa> fila = new PriorityQueue<>(new CustomIntegerComparator());
 		ArrayList<Pessoa> lista = new ArrayList<Pessoa>();
 
 		ObjectInputStream in;
@@ -51,7 +60,13 @@ public class Main {
 		}
 
 		int op = 0;
-
+		fila.clear();
+		lista.clear();
+		
+		fila.add(new Pessoa("dudu", "123", 5));
+		fila.add(new Pessoa("corto", "321", 10));
+		fila.add(new Pessoa("ramiro", "321", 15));
+		
 		do {
 			System.out.println("1. Inserir paciente na Fila\n" + "2. Remover paciente da Fila\n"
 					+ "3. Visualizar Fila\n" + "4. Visualizar Lista\n" + "5. Visualizar Lista em ordem Alfabética\n"
@@ -65,11 +80,21 @@ public class Main {
 			switch (op) {
 			case 1:
 				break;
+				
 			case 2:
+				removeDaFila(lista, fila);
 				break;
+				
 			case 3:
+				for(Pessoa e: fila) {
+					System.out.println(e);;
+				}
+				
 				break;
 			case 4:
+				for(int i = 0 ; i < lista.size() ; i ++) {
+				System.out.println(i + " - " + lista.get(i).exibePessoa());	
+				}
 				break;
 			case 5:
 				break;
