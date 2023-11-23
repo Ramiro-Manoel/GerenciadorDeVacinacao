@@ -15,11 +15,10 @@ import java.util.Scanner;
 
 public class Main {
 
-	public static int recebeInt(String mensagem) {
+	public static int recebeInt() {
 		Scanner sc = new Scanner(System.in);
 
 		int retorno = Integer.MAX_VALUE;
-		System.out.println(mensagem);
 		do {
 			try {
 				retorno = sc.nextInt();
@@ -32,6 +31,26 @@ public class Main {
 		return retorno;
 	}
 	
+	public static Pessoa criaPessoa() {
+		Pessoa paciente = new Pessoa();
+		Scanner sc = new Scanner(System.in);
+		
+		System.out.println("digite o nome compelto do paciente a ser adicionado na fila");
+		while(!paciente.verificaNome(sc.nextLine())) {
+			System.out.println("digite um nome válido (pelo menos 10 caracteres e um espaço)");
+		}
+		
+		System.out.println("digite o cpf do paciente a ser adicionado na fila(sem ponto e traço)");
+		while(!paciente.verificaCPF(sc.nextLine())) {
+			System.out.println("digite um cpf válido (de acordo com as regras de cpf");
+		}
+		System.out.println("digite a idade do paciente");
+		while(!paciente.verificaIdade(recebeInt())) {
+			System.out.println("digite uma idade valida (entre 1 e 110)");
+		}
+		return paciente;
+	}
+	
 	public static void removeDaFila(ArrayList<Pessoa> lista, Queue<Pessoa> fila) {
 		if(fila.isEmpty() == false) {
 			System.out.println("O paciente removido foi o:\n" + fila.peek().exibePessoa());
@@ -41,12 +60,31 @@ public class Main {
 			}
 	}
 	
+	public static boolean procuraCPFFila(Queue<Pessoa> fila, String cpf) {
+		for(Pessoa e : fila) {
+			if(e.getCpf().equals(cpf)) {
+				System.out.println(e.exibePessoa() );
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public static boolean procuraCPFLista(ArrayList<Pessoa> lista, String cpf) {
+		for(Pessoa e : lista) {
+			if(e.getCpf().equals(cpf)) {
+				System.out.println(e.exibePessoa() );
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	public static void main(String[] args) {
 
 		Scanner sc = new Scanner(System.in);
 		Queue<Pessoa> fila = new PriorityQueue<>(new CustomIntegerComparator());
 		ArrayList<Pessoa> lista = new ArrayList<Pessoa>();
-
 		ObjectInputStream in;
 		try {
 			in = new ObjectInputStream(new BufferedInputStream(new FileInputStream("vacinacao.dat")));
@@ -62,10 +100,7 @@ public class Main {
 		int op = 0;
 		fila.clear();
 		lista.clear();
-		
-		fila.add(new Pessoa("dudu", "123", 5));
-		fila.add(new Pessoa("corto", "321", 10));
-		fila.add(new Pessoa("ramiro", "321", 15));
+	
 		
 		do {
 			System.out.println("1. Inserir paciente na Fila\n" + "2. Remover paciente da Fila\n"
@@ -75,10 +110,12 @@ public class Main {
 					+ "9. Buscar Paciente por CPF na Lista\n" + "10. Contabilizar número total de vacinados na Lista\n"
 					+ "11. Gerar Relatório\n" + "0. Salvar e sair\n");
 
-			op = recebeInt("digite a opção desejada:");
+			System.out.println("digite a opção desejada:");
+			op = recebeInt();
 
 			switch (op) {
-			case 1:
+			case 1:		
+				fila.add(criaPessoa());	
 				break;
 				
 			case 2:
@@ -87,7 +124,7 @@ public class Main {
 				
 			case 3:
 				for(Pessoa e: fila) {
-					System.out.println(e);;
+					System.out.println(e.exibePessoa());;
 				}
 				
 				break;
@@ -99,14 +136,25 @@ public class Main {
 			case 5:
 				break;
 			case 6:
+				System.out.println("digite a margem do filtro de faixa ");
 				break;
 			case 7:
 				break;
 			case 8:
+				System.out.println("digite o cpf do paciente que deseja buscar na fila:");
+				if(!procuraCPFFila(fila, sc.nextLine())) {
+					System.out.println("não foi encontrado nenhum paciente com esse cpf na fila");
+				}
+				
 				break;
 			case 9:
+				System.out.println("digite o cpf do paciente que deseja buscar na lista:");
+				if(!procuraCPFFila(fila, sc.nextLine())) {
+					System.out.println("não foi encontrado nenhum paciente com esse cpf na lista");
+				}
 				break;
 			case 10:
+				System.out.println("o número total de vacinados na lista é: " + lista.size());
 				break;
 			case 11:
 				break;

@@ -49,6 +49,11 @@ public class Pessoa implements Serializable{
         if (verificaNumRepetido(cpf)) {
             return false;
         }
+        
+        if(cpf.length() != 11) {
+        	return false;
+        }
+        
         int[] teste = new int[cpf.length()];
         for (int i = 0; i < cpf.length(); i++) {
             teste[i] = Integer.valueOf(cpf.substring(i, i + 1));
@@ -81,21 +86,22 @@ public class Pessoa implements Serializable{
     }
 
     public boolean verificaNome(String nome) {
-        if (nome.length() >= 10) {
+        if (nome.length() < 10) {
             return false;
         }
 
         for (int i = 0; i < nome.length(); i++) {
             if (nome.charAt(i) == ' ') {
-                return false;
+            	this.nome = nome;
+                return true;
             }
         }
-        this.nome = nome;
-        return true;
+       
+        return false;
     }
 
     public boolean verificaIdade(int idade) {
-        if(idade >= 1 && idade <= 110) {
+        if(idade < 1 || idade > 110) {
             return false;
         }
 
