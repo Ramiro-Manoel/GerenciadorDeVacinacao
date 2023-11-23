@@ -2,7 +2,7 @@ package GerenciadorDeVacinacao;
 
 import java.io.Serializable;
 
-public class Pessoa implements Serializable{
+public class Pessoa implements Serializable, Comparable<Pessoa>{
 	private String nome;
 	private String cpf;
 	private int idade;
@@ -15,6 +15,10 @@ public class Pessoa implements Serializable{
 		this.idade = idade;
 	}
 
+	@Override
+    public int compareTo(Pessoa p) {
+        return this.nome.compareToIgnoreCase(p.nome);
+    }
 
 	public String getNome() {
 		return nome;
